@@ -5,3 +5,7 @@ label {
 button {
   margin-left: 20px;
 }
+
+video {
+  display: grid;
+}
