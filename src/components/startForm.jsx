@@ -1,6 +1,6 @@
 import React, { useState } from "react"
-import "./style.css"
 import Axios from "axios"
+import "./style.css"
 
 const StartForm = ({ storeToken }) => {
   const [name, setName] = useState("")

@@ -8,4 +8,6 @@ button {
 
 video {
   display: grid;
+  grid-auto-columns: auto;
+  max-width: 200px;
 }
