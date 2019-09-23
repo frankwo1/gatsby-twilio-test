@@ -46,3 +46,5 @@ const Video = ({ token }) => {
     </div>
   )
 }
+
+export default Video
