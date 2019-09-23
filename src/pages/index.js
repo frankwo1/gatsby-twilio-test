@@ -1,14 +1,57 @@
-import React from "react"
+import React, { useState, useEffect, useRef } from "react"
+import TwilioVideo from "twilio-video"
 import Layout from "../components/layout"
 import SEO from "../components/seo"
 import StartForm from "./../components/startForm"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <StartForm></StartForm>
-    {/* <Link to="/page-2/">Go to page 2</Link> */}
-  </Layout>
-)
+const Video = ({ token }) => {
+  const localVidRef = useRef(null)
+  const RemoteVidRef = useRef(null)
+
+  useEffect(() => {
+    TwilioVideo.connect(token, { video: true, audio: true, name: "test" }).then(
+      room => {
+        TwilioVideo.createLocalVideoTrack().then(track => {
+          localVidRef.current.appendChild(track.attach())
+        })
+        room.participants.forEach(participant => {
+          participant.tracks.forEach(publication => {
+            if (publication.isSubscribed) {
+              const track = publication.track
+
+              RemoteVidRef.current.appendChild(track.attach())
+            }
+          })
+        })
+        console.log("successfully joined room")
+        console.log(room)
+      }
+    )
+
+    return () => {}
+  }, [token])
+
+  return (
+    <div className="Videos-container">
+      <div ref={localVidRef}></div>
+      <div ref={RemoteVidRef}></div>
+    </div>
+  )
+}
+
+const IndexPage = () => {
+  const [token, setToken] = useState(false)
+  return (
+    <Layout>
+      <SEO title="Home" />
+      {!token ? (
+        <StartForm storeToken={setToken}></StartForm>
+      ) : (
+        <Video token={token} />
+      )}
+      {/* <Link to="/page-2/">Go to page 2</Link> */}
+    </Layout>
+  )
+}
 
 export default IndexPage

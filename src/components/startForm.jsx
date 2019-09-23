@@ -2,7 +2,7 @@ import React, { useState } from "react"
 import "./style.css"
 import Axios from "axios"
 
-const StartForm = () => {
+const StartForm = ({ storeToken }) => {
   const [name, setName] = useState("")
   const [room, setRoom] = useState("")
 
@@ -16,6 +16,10 @@ const StartForm = () => {
       //withCredentials: true,
     })
     console.log(result)
+    const jwt = result.data
+
+    //TODO add error handling
+    storeToken(jwt)
   }
 
   return (
